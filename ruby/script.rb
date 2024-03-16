@@ -1,4 +1,3 @@
-
 def split_into_blocks(lines)
     blocks = []
     block = ""
@@ -39,7 +38,7 @@ def extract_language_type(block)
     return [lines[0], lines[1]]
 end
 
-file = File.open("/Users/benlandrette/Desktop/languages-on-github.yml")
+file = File.open("./languages-on-github.yml")
 lines = file.readlines.map(&:chomp).filter { |line| line[0] != "#" }
 blocks = split_into_blocks(lines).filter { |line| line.length > 10 }
 formatted_blocks = blocks.map { |block| format_block(block) }
