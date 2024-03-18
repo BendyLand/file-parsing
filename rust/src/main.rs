@@ -4,7 +4,34 @@ fn main() {
     let file = read_file();
     let lines = filter_lines(&file);
     let blocks = split_into_blocks(lines);
-    println!("{:?}", blocks);
+    println!("{}", format_block(&blocks[0]));
+    println!("{}", format_block(&blocks[3]));
+}
+
+fn format_block(block: &String) -> String {
+    let mut words = {
+        block
+            .split_whitespace()
+            .map(|word| word.to_string())
+            .collect::<Vec<String>>()
+    };
+    if !words[0].contains(':') { 
+        words[0] = format!("{} {}", words[0], words[1]);
+        words.remove(1);
+    }
+    let mut pairs = Vec::<String>::new();
+    let mut pair = String::from("");
+    for word in words {
+        if word.contains(':') {
+            pairs.push(pair);
+            pair = String::from("");
+            pair += &word;
+        }
+        else {
+            pair += format!(" {}", &word).as_str();
+        }
+    }
+    pairs.join("\n")
 }
 
 fn split_into_blocks(file: String) -> Vec<String> {
