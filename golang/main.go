@@ -11,7 +11,46 @@ func main() {
 	filteredFile := filterFileContents(file)
 	blocks := splitIntoBlocks(filteredFile)
 	formattedBlocks := filterBlocks(blocks)
-	fmt.Println(formattedBlocks[0])
+	var (
+		programmingLanguages []string
+		nonProgrammingLanguages []string
+	)
+	for _, block := range formattedBlocks {
+		lines := strings.Split(block, "\n")
+		name := lines[1][:len(lines[1])-2]
+		if checkProgrammingLanguage(block) {
+			programmingLanguages = append(programmingLanguages, name)
+		} else {
+			nonProgrammingLanguages = append(nonProgrammingLanguages, name)
+		}
+	}
+	fmt.Println("Programming languages:")
+	for _, lang := range programmingLanguages {
+		fmt.Println(lang)
+	}
+	fmt.Println("\nNon-programming languages:")
+	for _, lang := range nonProgrammingLanguages {
+		fmt.Println(lang)
+	}
+}
+
+func extractLanguageName(block string) string {
+	lines := strings.Split(block, "\n")
+	fmt.Println(lines[0])
+	return lines[0]
+}
+
+func checkProgrammingLanguage(block string) bool {
+	lines := strings.Split(block, "\n")
+	for _, line := range lines {
+		words := strings.Split(line, " ")
+		if words[0] == "type:" {
+			if words[1] == "programming" {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 func filterBlocks(blocks []string) []string {
